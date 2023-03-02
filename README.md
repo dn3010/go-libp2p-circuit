@@ -25,7 +25,7 @@ go-libp2p-circuit
 ## Install
 
 ```sh
-go get -u github.com/libp2p/go-libp2p-circuit
+go get -u github.com/dn3010/go-libp2p-circuit
 ```
 
 ## Usage

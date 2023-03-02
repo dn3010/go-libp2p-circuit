@@ -10,14 +10,17 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/libp2p/go-libp2p-circuit"
-	pb "github.com/libp2p/go-libp2p-circuit/pb"
+	. "github.com/dn3010/go-libp2p-circuit"
+	pb "github.com/dn3010/go-libp2p-circuit/pb"
 
-	bhost "github.com/libp2p/go-libp2p-blankhost"
-	"github.com/libp2p/go-libp2p-core/host"
-
-	swarm "github.com/libp2p/go-libp2p-swarm"
-	swarmt "github.com/libp2p/go-libp2p-swarm/testing"
+	"github.com/libp2p/go-libp2p/core/crypto"
+	"github.com/libp2p/go-libp2p/core/host"
+	"github.com/libp2p/go-libp2p/core/metrics"
+	"github.com/libp2p/go-libp2p/core/peer"
+	bhost "github.com/libp2p/go-libp2p/p2p/host/blank"
+	"github.com/libp2p/go-libp2p/p2p/host/peerstore/pstoremem"
+	swarm "github.com/libp2p/go-libp2p/p2p/net/swarm"
+	swarmt "github.com/libp2p/go-libp2p/p2p/net/swarm/testing"
 	ma "github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr/net"
 )
@@ -44,7 +47,33 @@ func getNetHosts(t *testing.T, n int) []host.Host {
 }
 
 func newTestRelay(t *testing.T, host host.Host, opts ...RelayOpt) *Relay {
-	r, err := NewRelay(host, swarmt.GenUpgrader(t, host.Network().(*swarm.Swarm)), opts...)
+	privk, pubk, err := crypto.GenerateKeyPair(crypto.Ed25519, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	p, err := peer.IDFromPublicKey(pubk)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ps, err := pstoremem.NewPeerstore()
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = ps.AddPrivKey(p, privk)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	bwr := metrics.NewBandwidthCounter()
+	netw, err := swarm.NewSwarm(p, ps, swarm.WithMetrics(bwr))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	upgrader := swarmt.GenUpgrader(t, netw, nil)
+	r, err := NewRelay(host, upgrader, opts...)
 	if err != nil {
 		t.Fatal(err)
 	}
