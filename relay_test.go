@@ -18,6 +18,7 @@ import (
 	"github.com/libp2p/go-libp2p/core/metrics"
 	"github.com/libp2p/go-libp2p/core/peer"
 	bhost "github.com/libp2p/go-libp2p/p2p/host/blank"
+	"github.com/libp2p/go-libp2p/p2p/host/eventbus"
 	"github.com/libp2p/go-libp2p/p2p/host/peerstore/pstoremem"
 	swarm "github.com/libp2p/go-libp2p/p2p/net/swarm"
 	swarmt "github.com/libp2p/go-libp2p/p2p/net/swarm/testing"
@@ -67,7 +68,7 @@ func newTestRelay(t *testing.T, host host.Host, opts ...RelayOpt) *Relay {
 	}
 
 	bwr := metrics.NewBandwidthCounter()
-	netw, err := swarm.NewSwarm(p, ps, swarm.WithMetrics(bwr))
+	netw, err := swarm.NewSwarm(p, ps, eventbus.NewBus(), swarm.WithMetrics(bwr))
 	if err != nil {
 		t.Fatal(err)
 	}
