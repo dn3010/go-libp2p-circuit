@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/dn3010/go-libp2p-circuit"
+	. "github.com/futureversecom/go-libp2p-circuit"
 	"github.com/libp2p/go-libp2p/p2p/net/swarm"
 	swarmt "github.com/libp2p/go-libp2p/p2p/net/swarm/testing"
 

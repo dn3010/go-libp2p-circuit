@@ -5,13 +5,12 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net"
 	"testing"
 	"time"
 
-	. "github.com/dn3010/go-libp2p-circuit"
-	pb "github.com/dn3010/go-libp2p-circuit/pb"
+	. "github.com/futureversecom/go-libp2p-circuit"
+	pb "github.com/futureversecom/go-libp2p-circuit/pb"
 
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/host"
@@ -216,7 +215,7 @@ func TestRelayReset(t *testing.T) {
 
 	close(ready)
 
-	_, err = ioutil.ReadAll(con)
+	_, err = io.ReadAll(con)
 	if err == nil {
 		t.Fatal("expected error for reset relayed connection")
 	}

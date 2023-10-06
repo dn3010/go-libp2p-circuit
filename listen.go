@@ -3,7 +3,7 @@ package relay
 import (
 	"net"
 
-	pb "github.com/dn3010/go-libp2p-circuit/pb"
+	pb "github.com/futureversecom/go-libp2p-circuit/pb"
 
 	ma "github.com/multiformats/go-multiaddr"
 	manet "github.com/multiformats/go-multiaddr/net"

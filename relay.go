@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	pb "github.com/dn3010/go-libp2p-circuit/pb"
+	pb "github.com/futureversecom/go-libp2p-circuit/pb"
 
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"

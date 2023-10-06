@@ -1,4 +1,4 @@
-module github.com/dn3010/go-libp2p-circuit
+module github.com/futureversecom/go-libp2p-circuit
 
 go 1.20
 
